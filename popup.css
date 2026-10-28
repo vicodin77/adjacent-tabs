@@ -1,0 +1,176 @@
+:root {
+  color-scheme: light dark;
+  font-family: Arial, system-ui, sans-serif;
+  font-size: 14px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 340px;
+  color: #172033;
+  background: #f7f9fc;
+}
+
+.panel {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  width: 48px;
+  height: 48px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #39724c;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #3aa760;
+  box-shadow: 0 0 0 3px rgb(58 167 96 / 14%);
+}
+
+.status.paused {
+  color: #6e7788;
+}
+
+.status.paused .status-dot {
+  background: #8a93a3;
+  box-shadow: none;
+}
+
+.intro {
+  margin: 16px 0 10px;
+  color: #596276;
+}
+
+.settings {
+  overflow: hidden;
+  border: 1px solid #dfe4ee;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.setting {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 38px;
+  gap: 14px;
+  align-items: center;
+  min-height: 76px;
+  padding: 14px;
+  cursor: pointer;
+}
+
+.setting + .setting {
+  border-top: 1px solid #e8ecf3;
+}
+
+.setting strong,
+.setting small {
+  display: block;
+}
+
+.setting strong {
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+.setting small {
+  color: #6e7788;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.setting input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.switch {
+  position: relative;
+  width: 38px;
+  height: 22px;
+  border-radius: 999px;
+  background: #b5bdca;
+  transition: background 160ms ease;
+}
+
+.switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 20%);
+  transition: transform 160ms ease;
+}
+
+input:checked + .switch {
+  background: #1473e6;
+}
+
+input:checked + .switch::after {
+  transform: translateX(16px);
+}
+
+input:focus-visible + .switch {
+  outline: 3px solid rgb(20 115 230 / 28%);
+  outline-offset: 2px;
+}
+
+.privacy {
+  margin: 12px 0 0;
+  color: #7b8494;
+  font-size: 11px;
+  text-align: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    color: #f3f6fb;
+    background: #1d222c;
+  }
+
+  .intro,
+  .setting small,
+  .privacy {
+    color: #aeb7c7;
+  }
+
+  .settings {
+    border-color: #3a4250;
+    background: #282e39;
+  }
+
+  .setting + .setting {
+    border-color: #3a4250;
+  }
+}

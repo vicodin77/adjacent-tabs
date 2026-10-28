@@ -1,0 +1,32 @@
+{
+  "extensionName": {
+    "message": "Adjacent Tabs"
+  },
+  "extensionDescription": {
+    "message": "Opens new tabs to the right of the current tab and switches to the tab on the left when the active tab is closed."
+  },
+  "statusActive": {
+    "message": "Active"
+  },
+  "statusPaused": {
+    "message": "Paused"
+  },
+  "popupIntro": {
+    "message": "Choose how tabs should behave."
+  },
+  "placeRightTitle": {
+    "message": "Open next to current"
+  },
+  "placeRightDescription": {
+    "message": "Place new tabs immediately to the right."
+  },
+  "focusLeftTitle": {
+    "message": "Return to the left"
+  },
+  "focusLeftDescription": {
+    "message": "After closing the active tab, select the tab on its left."
+  },
+  "privacyNote": {
+    "message": "No browsing data is collected or transmitted."
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "extensionName": {
+    "message": "Adjacent Tabs"
+  },
+  "extensionDescription": {
+    "message": "Открывает новые вкладки справа от текущей, а после закрытия активной вкладки переключается на вкладку слева."
+  },
+  "statusActive": {
+    "message": "Активно"
+  },
+  "statusPaused": {
+    "message": "Приостановлено"
+  },
+  "popupIntro": {
+    "message": "Выберите нужное поведение вкладок."
+  },
+  "placeRightTitle": {
+    "message": "Открывать рядом с текущей"
+  },
+  "placeRightDescription": {
+    "message": "Помещать новые вкладки сразу справа."
+  },
+  "focusLeftTitle": {
+    "message": "Возвращаться влево"
+  },
+  "focusLeftDescription": {
+    "message": "После закрытия активной вкладки выбирать вкладку слева."
+  },
+  "privacyNote": {
+    "message": "Данные о посещениях не собираются и не передаются."
+  }
+}

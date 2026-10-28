@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Adjacent Tabs</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main class="panel">
+      <header class="header">
+        <img class="logo" src="icons/icon48.png" alt="">
+        <div>
+          <h1 data-i18n="extensionName">Adjacent Tabs</h1>
+          <div class="status" id="status">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span id="statusText" data-i18n="statusActive">Active</span>
+          </div>
+        </div>
+      </header>
+
+      <p class="intro" data-i18n="popupIntro">Choose how tabs should behave.</p>
+
+      <section class="settings" aria-label="Tab behavior">
+        <label class="setting">
+          <span>
+            <strong data-i18n="placeRightTitle">Open next to current</strong>
+            <small data-i18n="placeRightDescription">Place new tabs immediately to the right.</small>
+          </span>
+          <input id="placeNewTabsRight" type="checkbox" role="switch">
+          <span class="switch" aria-hidden="true"></span>
+        </label>
+
+        <label class="setting">
+          <span>
+            <strong data-i18n="focusLeftTitle">Return to the left</strong>
+            <small data-i18n="focusLeftDescription">After closing the active tab, select the tab on its left.</small>
+          </span>
+          <input id="focusLeftOnClose" type="checkbox" role="switch">
+          <span class="switch" aria-hidden="true"></span>
+        </label>
+      </section>
+
+      <p class="privacy" data-i18n="privacyNote">No browsing data is collected or transmitted.</p>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>
