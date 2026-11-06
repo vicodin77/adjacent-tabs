@@ -1,4 +1,6 @@
 const windowStates = new Map();
+const activeTabIds = new Map();
+const recentActivations = new Map();
 const STORAGE_KEY = "windowStates";
 const DEFAULT_SETTINGS = {
   placeNewTabsRight: true,
@@ -52,6 +54,7 @@ async function loadWindow(windowId) {
     const nextState = stateFromTabs(browserWindow.tabs ?? []);
     nextState.lastActivation = previousState?.lastActivation ?? null;
     windowStates.set(windowId, nextState);
+    activeTabIds.set(windowId, nextState.activeTabId);
     await persistStates();
     return nextState;
   } catch {
@@ -68,12 +71,14 @@ async function loadAllWindows() {
 
   windowStates.clear();
   for (const browserWindow of windows) {
-    windowStates.set(browserWindow.id, stateFromTabs(browserWindow.tabs ?? []));
+    const state = stateFromTabs(browserWindow.tabs ?? []);
+    windowStates.set(browserWindow.id, state);
+    activeTabIds.set(browserWindow.id, state.activeTabId);
   }
   await persistStates();
 }
 
-async function placeNewTabNextToCurrent(tab) {
+async function placeNewTabNextToCurrent(tab, creationReferenceTabId) {
   await readyPromise;
   if (!settings.placeNewTabsRight) {
     await loadWindow(tab.windowId);
@@ -87,6 +92,7 @@ async function placeNewTabNextToCurrent(tab) {
 
   const referenceTabId =
     tab.openerTabId ??
+    creationReferenceTabId ??
     (state.activeTabId !== tab.id ? state.activeTabId : state.lastActivation?.fromTabId);
 
   if (referenceTabId == null || referenceTabId === tab.id) {
@@ -128,10 +134,36 @@ const readyPromise = Promise.all([restoreStates(), loadSettings()]).then(() => {
 });
 
 chrome.tabs.onCreated.addListener((tab) => {
-  void placeNewTabNextToCurrent(tab);
+  // Встроенные страницы браузера (например, «История») могут сначала
+  // активировать созданную вкладку и только затем сообщить о её создании.
+  // Поэтому фиксируем предыдущую активную вкладку прямо в момент события,
+  // не дожидаясь асинхронной инициализации service worker.
+  const trackedActiveTabId =
+    activeTabIds.get(tab.windowId) ?? windowStates.get(tab.windowId)?.activeTabId;
+  const recentActivation = recentActivations.get(tab.windowId);
+  const creationReferenceTabId =
+    trackedActiveTabId !== tab.id
+      ? trackedActiveTabId
+      : recentActivation?.toTabId === tab.id
+        ? recentActivation.fromTabId
+        : null;
+
+  void placeNewTabNextToCurrent(tab, creationReferenceTabId);
 });
 
 chrome.tabs.onActivated.addListener(({ tabId, windowId }) => {
+  const previousTabId =
+    activeTabIds.get(windowId) ?? windowStates.get(windowId)?.activeTabId ?? null;
+
+  if (previousTabId !== tabId) {
+    recentActivations.set(windowId, {
+      fromTabId: previousTabId,
+      toTabId: tabId,
+      at: Date.now(),
+    });
+    activeTabIds.set(windowId, tabId);
+  }
+
   void readyPromise.then(async () => {
     const state = windowStates.get(windowId);
     if (!state) {
@@ -212,6 +244,8 @@ chrome.windows.onCreated.addListener((browserWindow) => {
 
 chrome.windows.onRemoved.addListener((windowId) => {
   windowStates.delete(windowId);
+  activeTabIds.delete(windowId);
+  recentActivations.delete(windowId);
   void persistStates();
 });
 
